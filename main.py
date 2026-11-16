@@ -136,11 +136,11 @@ while True:
  if g["status"]=="done":break
  b,s,ep=parse(g["fen"])
  ms=search(b,s,ep)
- if not ms:break
+ if not ms:continue
  ok=0
  for m in ms:
   try:
    g=P("/move",{"game":g["game"],"move":uci(*m)});ok=1;break
   except:pass
- if not ok:break
- if g.get("status")=="done":break
+ if not ok:continue
+ if g.get("status")=="done":continue
