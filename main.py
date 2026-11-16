@@ -9,10 +9,10 @@ def pst(pc,i):
  r=i>>4;f=i&7
  if pc&8:r=7-r
  t=pc&7
- if t==1:return(50 if r in(0,7)else 10 if r in(1,6)else 25 if r in(2,5)else 45)*(-1 if pc&8 else 1)
- if t==2:return(30-(abs(r-3)+abs(f-3))*8)*(-1 if pc&8 else 1)
- if t==3:return(20-(abs(r-3)+abs(f-3))*4)*(-1 if pc&8 else 1)
- if t in(4,5):return(10-(abs(r-3)+abs(f-3))*2)*(-1 if pc&8 else 1)
+ if t==1:return 0
+ if t==2:return(80-(abs(r-3)+abs(f-4))*12)*(-1 if pc&8 else 1)
+ if t==3:return(60-(abs(r-3)+abs(f-4))*8)*(-1 if pc&8 else 1)
+ if t in(4,5):return(30-(abs(r-3)+abs(f-4))*5)*(-1 if pc&8 else 1)
  return 0
 def parse(f):
  b=[0]*128;ep=0
