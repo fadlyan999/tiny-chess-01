@@ -3,7 +3,7 @@ B=0x88
 V=(0,100,320,330,500,900,100000)
 NK=(18,33,31,14,-18,-33,-31,-14)
 SL=(17,15,-17,-15,1,16,-1,-16)
-INF=99999;MD=4;TIME=1400
+INF=99999;MD=4
 def pst(pc,i):
  if i&B or not pc:return 0
  r=i>>4;f=i&7
@@ -106,7 +106,7 @@ def ev(b,s):
  return sc*(1 if s>0 else-1)
 def qs(b,s,ep,al,be,d):
  v=ev(b,s)
- if d==0 or v>=be:return v
+ if d<1 or v>=be:return v
  if v>al:al=v
  for f,t,p in gen(b,s,ep):
   if not b[t]:continue
@@ -116,11 +116,8 @@ def qs(b,s,ep,al,be,d):
   if v>=be:return v
   if v>al:al=v
  return al
-T=0
 def ab(b,s,ep,al,be,d):
- global T
- if time.time()-T>TIME:d=1
- if d==0:return qs(b,s,ep,al,be,4)
+ if d==0:return qs(b,s,ep,al,be,3)
  ms=legal(b,s,ep)
  if not ms:
   ks=ksq(b,s)
@@ -134,8 +131,6 @@ def ab(b,s,ep,al,be,d):
   if v>al:al=v
  return al
 def search(b,s,ep):
- global T
- T=time.time()
  r=[]
  for f,t,p in legal(b,s,ep):
   pc=b[f];was=b[t];ap((f,t,p),b)
@@ -162,4 +157,3 @@ while True:
    g=P("/move",{"game":g["game"],"move":uci(*m)});ok=1;break
   except:pass
  if not ok:continue
- if g.get("status")=="done":continue
