@@ -1,9 +1,9 @@
-import json,os,urllib.request as U
+import json,os,time,urllib.request as U
 B=0x88
 V=(0,100,320,330,500,900,100000)
 NK=(18,33,31,14,-18,-33,-31,-14)
 SL=(17,15,-17,-15,1,16,-1,-16)
-INF=99999;MD=4
+INF=99999;MD=4;TIME=1400
 def pst(pc,i):
  if i&B or not pc:return 0
  r=i>>4;f=i&7
@@ -104,7 +104,10 @@ def ev(b,s):
  ks=ksq(b,s)
  if ks is not None and att(b,ks,8 if s>0 else 0):sc-=150
  return sc*(1 if s>0 else-1)
+T=0
 def ab(b,s,ep,al,be,d):
+ global T
+ if time.time()-T>TIME:d=1
  if d==0:return ev(b,s)
  ms=legal(b,s,ep)
  if not ms:
@@ -119,6 +122,8 @@ def ab(b,s,ep,al,be,d):
   if v>al:al=v
  return al
 def search(b,s,ep):
+ global T
+ T=time.time()
  r=[]
  for f,t,p in legal(b,s,ep):
   pc=b[f];was=b[t];ap((f,t,p),b)
