@@ -3,22 +3,16 @@ B=0x88
 V=(0,100,320,330,500,900,100000)
 NK=(18,33,31,14,-18,-33,-31,-14)
 SL=(17,15,-17,-15,1,16,-1,-16)
-INF=99999;MD=3
+INF=99999;MD=4
 def pst(pc,i):
  if i&B or not pc:return 0
  r=i>>4;f=i&7
  if pc&8:r=7-r
  t=pc&7
- if t==1:
-  if r in(0,7):v=0
-  elif r in(1,6):v=15
-  elif r in(2,5):v=30
-  else:v=50
-  return v*(-1 if pc&8 else 1)
- d=(abs(r-3)+abs(f-3))
- if t==2:return(160-d*20)*(-1 if pc&8 else 1)
- if t==3:return(120-d*10)*(-1 if pc&8 else 1)
- if t in(4,5):return(80-d*5)*(-1 if pc&8 else 1)
+ if t==1:return(50 if r in(0,7)else 10 if r in(1,6)else 25 if r in(2,5)else 45)*(-1 if pc&8 else 1)
+ if t==2:return(30-(abs(r-3)+abs(f-3))*8)*(-1 if pc&8 else 1)
+ if t==3:return(20-(abs(r-3)+abs(f-3))*4)*(-1 if pc&8 else 1)
+ if t in(4,5):return(10-(abs(r-3)+abs(f-3))*2)*(-1 if pc&8 else 1)
  return 0
 def parse(f):
  b=[0]*128;ep=0
@@ -107,9 +101,8 @@ def ev(b,s):
    t=p&7
    if not t:continue
    sc+=V[t]*(-1 if p&8 else 1)+pst(p,i)
- # penalty if in check
  ks=ksq(b,s)
- if ks is not None and att(b,ks,8 if s>0 else 0):sc-=100
+ if ks is not None and att(b,ks,8 if s>0 else 0):sc-=150
  return sc*(1 if s>0 else-1)
 def ab(b,s,ep,al,be,d):
  if d==0:return ev(b,s)
