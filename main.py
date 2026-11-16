@@ -104,11 +104,23 @@ def ev(b,s):
  ks=ksq(b,s)
  if ks is not None and att(b,ks,8 if s>0 else 0):sc-=150
  return sc*(1 if s>0 else-1)
+def qs(b,s,ep,al,be,d):
+ v=ev(b,s)
+ if d==0 or v>=be:return v
+ if v>al:al=v
+ for f,t,p in gen(b,s,ep):
+  if not b[t]:continue
+  pc=b[f];was=b[t];ap((f,t,p),b)
+  v=-qs(b,-s,ep,-be,-al,d-1)
+  unm((f,t,p),b,pc,was)
+  if v>=be:return v
+  if v>al:al=v
+ return al
 T=0
 def ab(b,s,ep,al,be,d):
  global T
  if time.time()-T>TIME:d=1
- if d==0:return ev(b,s)
+ if d==0:return qs(b,s,ep,al,be,4)
  ms=legal(b,s,ep)
  if not ms:
   ks=ksq(b,s)
