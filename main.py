@@ -3,7 +3,7 @@ B=0x88
 V=(0,100,320,330,500,900,100000)
 NK=(18,33,31,14,-18,-33,-31,-14)
 SL=(17,15,-17,-15,1,16,-1,-16)
-INF=99999;MD=4
+INF=99999;MD=3
 def pst(pc,i):
  if i&B or not pc:return 0
  r=i>>4;f=i&7
@@ -11,10 +11,14 @@ def pst(pc,i):
  t=pc&7
  if t==1:
   if r in(0,7):v=0
-  elif r in(1,6):v=10
-  elif r in(2,5):v=20
-  else:v=30
+  elif r in(1,6):v=15
+  elif r in(2,5):v=30
+  else:v=50
   return v*(-1 if pc&8 else 1)
+ d=(abs(r-3)+abs(f-3))
+ if t==2:return(160-d*20)*(-1 if pc&8 else 1)
+ if t==3:return(120-d*10)*(-1 if pc&8 else 1)
+ if t in(4,5):return(80-d*5)*(-1 if pc&8 else 1)
  return 0
 def parse(f):
  b=[0]*128;ep=0
