@@ -107,6 +107,9 @@ def ev(b,s):
    t=p&7
    if not t:continue
    sc+=V[t]*(-1 if p&8 else 1)+pst(p,i)
+ # penalty if in check
+ ks=ksq(b,s)
+ if ks is not None and att(b,ks,8 if s>0 else 0):sc-=100
  return sc*(1 if s>0 else-1)
 def ab(b,s,ep,al,be,d):
  if d==0:return ev(b,s)
