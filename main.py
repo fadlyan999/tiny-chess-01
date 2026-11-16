@@ -114,7 +114,9 @@ def ev(b,s):
 def ab(b,s,ep,al,be,d):
  if d==0:return ev(b,s)
  ms=legal(b,s,ep)
- if not ms:return ev(b,s)
+ if not ms:
+  ks=ksq(b,s)
+  return -90000+d if(ks is not None and att(b,ks,8 if s>0 else 0))else 0
  ms.sort(key=lambda m:-V[b[m[1]]&7]if b[m[1]]else 0)
  for f,t,p in ms:
   pc=b[f];was=b[t];ap((f,t,p),b)
